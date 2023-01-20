@@ -14,7 +14,7 @@ const fetchMyIP = (callback) => {
       return;
     }
 
-    // if we get here, all's well and we got the data
+    //JSON.parse changes data type from string to object here, so it's usable
     const data = JSON.parse(body).ip;
     callback(null, data);
 
@@ -33,8 +33,8 @@ const fetchCoordsByIP = (ip, callback) => {
       return;
     }
 
-    const data = findKeyValue(dataObject, ["latitude", "longitude"]);
-    callback(null, data);
+    const { latitude, longitude } = dataObject;
+    callback(null, { latitude, longitude });
   });
 };
 
@@ -72,20 +72,19 @@ const nextISSTimesForMyLocation = (callback) => {
 };
 
 
-
-
-const findKeyValue = (object, keys) => { //helper function; extracts specified key-value pair
-  let result = {};
-  for (const [key, value] of Object.entries(object)) {
-    for (let neededKey of keys) {
-      if (key.includes(neededKey)) {
-        result[key] = value;
-      }
-    }
-  }
-  return result;
-};
-
 module.exports = {
   nextISSTimesForMyLocation
 };
+
+// const data = findKeyValue(dataObject, ["latitude", "longitude"]);
+// const findKeyValue = (object, keys) => { //helper function; extracts specified key-value pair
+//   let result = {};
+//   for (const [key, value] of Object.entries(object)) {
+//     for (let neededKey of keys) {
+//       if (key.includes(neededKey)) {
+//         result[key] = value;
+//       }
+//     }
+//   }
+//   return result;
+// };
